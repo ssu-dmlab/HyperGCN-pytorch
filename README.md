@@ -17,8 +17,8 @@ Source code for [NeurIPS 2019](https://nips.cc/) paper: [**HyperGCN: A New Metho
 
 - To start training run:
 
-  ```shell
-  python hypergcn.py --mediators True --split 1 --data coauthorship --dataset dblp
+  ```shells
+  python ./src/main.py --mediators True --split 1 --data coauthorship --dataset dblp
   ```
 
   - `--mediators` denotes whether to use mediators (True) or not (False) 
@@ -36,5 +36,23 @@ pages = {1509--1520},
 year = {2019},
 publisher = {Curran Associates, Inc.}
 }
+
+```
+
+#Difference with paper
+
+```
+paper uses hyper parameter as
+hidden layer size : 32
+dropout rate : 0.5
+learning rate : 0.01
+weight decay : o.ooo5
+number of training epochs : 200
+lamda for explicit Laplacian regularisation : 0.001
+Following a prior work Kipf and Welling [2017]
+
+However in condition, HyperGCn does not work well.
+
+Need to find proper hyperparameter -> grid experiment
 
 ```

@@ -1,10 +1,9 @@
-from model import networks
+
 import torch, os, numpy as np, scipy.sparse as sp
 import torch.optim as optim, torch.nn.functional as F
 
 from torch.autograd import Variable
 from tqdm import tqdm #상태진행률
-from model import utils
 
 
 def train(HyperGCN, dataset, T, args):

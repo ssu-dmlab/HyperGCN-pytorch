@@ -6,12 +6,16 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
 
 import data
-dataset, train, test = data.load(args) #load data,dataset parse해서 가져옴 dict형식
-print("length of train is", len(train))
+dataset, trainIndex, test = data.load(args) #load data,dataset parse해서 가져옴 dict형식
+print("length of train is", len(trainIndex))
 print("length of test is", len(test))
 print("how can make val part?")
 print("dropout is {}".format(args.dropout))
 
+from models.HyperGCN import model
+import torch.optim as optim
+from torch.autograd import Variable
+import scipy.sparse as sp
 
 def initialise(dataset, args):
     """
@@ -31,7 +35,7 @@ def initialise(dataset, args):
 
     # hypergcn and optimiser
     args.d, args.c = X.shape[1], Y.shape[1]
-    hypergcn = networks.HyperGCN(V, E, X, args)
+    hypergcn = model.HyperGCN(V, E, X, args)
     optimiser = optim.Adam(list(hypergcn.parameters()), lr=args.rate, weight_decay=args.decay)  # optimiser adam used
 
     # node features in sparse representation
@@ -82,9 +86,11 @@ def normalise(M):  # normalize matrix
 HyperGCN = initialise(dataset, args)
 
 #step 1. Run (train and evaluate) the specified model
-from model import model
-HyperGCN = model.train(HyperGCN, dataset, train, args)  #model.py train function
-acc = model.test(HyperGCN, dataset, test, args)         #model.py test function
+from models.HyperGCN import train as T
+from models.HyperGCN import eval as E
+
+HyperGCN = T.train(HyperGCN, dataset, trainIndex, args)  #model.py train function
+acc = E.test(HyperGCN, dataset, test, args)         #model.py test function
 
 #step 2. Reprotr and save the final results
 print("accuracy:", float(acc), ", error:", float(100*(1-acc))) #model.py accuracy, error

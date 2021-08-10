@@ -1,9 +1,3 @@
-import torch, numpy as np
-import torch.nn as nn, torch.nn.functional as F
-
-from torch.autograd import Variable
-from model import utils
-
 import torch, math, numpy as np, scipy.sparse as sp
 import torch.nn as nn, torch.nn.functional as F, torch.nn.init as init
 
@@ -259,13 +253,13 @@ class HyperGCN(nn.Module):
 
         if args.fast:
             reapproximate = False
-            structure = utils.Laplacian(V, E, X, args.mediators)
+            structure = Laplacian(V, E, X, args.mediators)
         else:
             reapproximate = True
             structure = E
 
         self.layers = nn.ModuleList(
-            [utils.HyperGraphConvolution(h[i], h[i + 1], reapproximate, cuda) for i in range(l)])
+            [HyperGraphConvolution(h[i], h[i + 1], reapproximate, cuda) for i in range(l)])
         self.do, self.l = args.dropout, args.depth
         self.structure, self.m = structure, args.mediators
 
