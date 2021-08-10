@@ -50,7 +50,10 @@ decay: weight decay
 rate = 0.01
 decay = 0.0005
 
-
+'''
+model for hypergraph neral network
+'''
+model="HyperGCN"
 
 import configargparse, os,sys,inspect
 from configargparse import YAMLConfigFileParser
@@ -78,6 +81,7 @@ def parse():
 	p.add('--cuda', type=bool, default=cuda, help='cuda for gpu')
 	p.add('--seed', type=int, default=seed, help='seed for randomness')
 	p.add('-f') # for jupyter default
+	p.add('--model', type=str, default=model, help='model for Hypergraph neural network')
 	return p.parse_args()
 
 

@@ -35,6 +35,7 @@ def initialise(dataset, args):
 
     # hypergcn and optimiser
     args.d, args.c = X.shape[1], Y.shape[1]
+
     hypergcn = model.HyperGCN(V, E, X, args)
     optimiser = optim.Adam(list(hypergcn.parameters()), lr=args.rate, weight_decay=args.decay)  # optimiser adam used
 
