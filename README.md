@@ -27,7 +27,7 @@ weight decay : o.ooo5
 number of training epochs : 500
 lamda for explicit Laplacian regularisation : 0.001
 
-split  do  epoch  acc
+split    do   epoch   acc
 1 	  0.05	500	  0.8555431980183000
 2 	  0.05	500	  0.8527627521358880
 3 	  0.05	500	  0.8494262170769930
