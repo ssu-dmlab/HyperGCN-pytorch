@@ -1,6 +1,6 @@
 import torch, math, numpy as np, scipy.sparse as sp
 import torch.nn as nn, torch.nn.functional as F, torch.nn.init as init
-
+from itertools import combinations
 from torch.autograd import Variable
 from torch.nn.modules.module import Module
 from torch.nn.parameter import Parameter
@@ -92,16 +92,23 @@ def Laplacian(V, E, X, m):  # hypergraph -> graph
     """
 
     edges, weights = [], {}
-    rv = np.random.rand(X.shape[1])
-    #rv = np.ones(X.shape[1])
 
     for k in E.keys():
+        node1 = 0
+        node2 = 0
+        max = 0
         hyperedge = list(E[k])
-        #random_index = np.random.choice(hyperedge)
-        #rv=X[random_index]
-        p = np.dot(X[hyperedge], rv.T)  # projection onto a random vector rv
-        s, i = np.argmax(p), np.argmin(p)
-        Se, Ie = hyperedge[s], hyperedge[i]
+        combination = list(combinations(hyperedge,2))
+        for i in combination:
+            x = i[0] #hypernode 선택
+            y = i[1]
+            p = np.linalg.norm(X[x]-X[y], ord = 1, axis = None, keepdims = False)
+            if max < p:
+                max = p
+                node1 = x
+                node2 = y
+
+        Se, Ie = node1, node2
 
         # two stars with mediators
         c = 2 * len(hyperedge) - 3  # normalisation constant
@@ -234,7 +241,7 @@ def ssm2tst(M):  # convert to torch matrix
 
 
 class HyperGCN(nn.Module):
-    def __init__(self, V, E, X, args): #node-feature [paper] feature config
+    def __init__(self, V, E, X, args):
         """
         d: initial node-feature dimension
         h: number of hidden units
@@ -245,16 +252,16 @@ class HyperGCN(nn.Module):
         cuda = args.cuda and torch.cuda.is_available()
 
         h = [d]
-        for i in range(l - 1): #l = 2
-            power = l - i + 2 #power = 4
+        for i in range(l - 1):
+            power = l - i + 2
             if args.dataset == 'citeseer': power = l - i + 4
             h.append(2 ** power)
-        h.append(c) #hidden units = 16
+        h.append(c)
 
-        if args.fast: #FasthyperGCN
+        if args.fast:
             reapproximate = False
             structure = Laplacian(V, E, X, args.mediators)
-        else: #1-hyper or HyperGCN
+        else:
             reapproximate = True
             structure = E
 
@@ -272,6 +279,7 @@ class HyperGCN(nn.Module):
         for i, hidden in enumerate(self.layers):
             H = F.relu(hidden(self.structure, H, m))
             if i < l - 1:
+                V = H
                 H = F.dropout(H, do, training=self.training)
 
         return F.log_softmax(H, dim=1)

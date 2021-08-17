@@ -6,16 +6,22 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
 
 import data
-dataset, trainIndex, test = data.load(args) #load data,dataset parse해서 가져옴 dict형식
+'''dataset, trainIndex, test = data.load(args) #load data,dataset parse해서 가져옴 dict형식
 print("length of train is", len(trainIndex))
 print("length of test is", len(test))
-print("how can make val part?")
-print("dropout is {}".format(args.dropout))
+print("dropout is {}".format(args.dropout))'''
 
-from models.HyperGCN import model
-import torch.optim as optim
+
+import torch.optim as optim, utils
 from torch.autograd import Variable
 import scipy.sparse as sp
+
+if args.model == "HyperGCN":
+    from models.HyperGCN import train as T
+    from models.HyperGCN import eval as E
+elif args.model == "researchGCN":
+    from models.researchGCN import train as T
+    from models.researchGCN import eval as E
 
 def initialise(dataset, args):
     """
@@ -30,17 +36,31 @@ def initialise(dataset, args):
     """
 
     HyperGCN = {}
-    V, E = dataset['n'], dataset['hypergraph']
+    V, E = dataset['n'], dataset['hypergraph'] #V(논문) feature값  E [논문]값
     X, Y = dataset['features'], dataset['labels']  # X=feature matrix Y=label vector
 
-    # hypergcn and optimiser
-    args.d, args.c = X.shape[1], Y.shape[1]
+    print(X.shape)
+    print(Y.shape)
 
+    # hypergcn and optimiser
+    args.d, args.c = X.shape[1], Y.shape[1] #args.d = feature size args.c = label size
+
+    if args.model == "HyperGCN":
+        from models.HyperGCN import model
+        hypergcn = model.HyperGCN(V, E, X, args)
+    elif args.model == "researchGCN":
+        from models.researchGCN import model
+        hypergcn = model.HyperGCN(V, E, X, args)
+
+    '''
+    model = __import__('models.' + args.model + '.model')
     hypergcn = model.HyperGCN(V, E, X, args)
+    '''
+
     optimiser = optim.Adam(list(hypergcn.parameters()), lr=args.rate, weight_decay=args.decay)  # optimiser adam used
 
     # node features in sparse representation
-    X = sp.csr_matrix(normalise(np.array(X)), dtype=np.float32)  # X normalize
+    X = sp.csr_matrix(utils.normalise(np.array(X)), dtype=np.float32)  # X normalize
     X = torch.FloatTensor(np.array(X.todense()))  # make X np tensor
 
     # labels
@@ -62,37 +82,51 @@ def initialise(dataset, args):
     HyperGCN['optimiser'] = optimiser
     return HyperGCN
 
+epoch_list = [500, 1000, 2000]
+lrs = [0.001, 0.005, 0.01, 0.05, 0.1]
+data_num = [1,2,3,4,5,6,7,8,9,10]
 
-def normalise(M):  # normalize matrix
-    """
-    row-normalise sparse matrix
+csv_file_name = '/Users/keonwoo/Google Drive/result_table1.csv'
 
-    arguments:
-    M: scipy sparse matrix
+with open(csv_file_name, 'w') as f:
+    f.write(','.join(['split', 'lr', 'epochs', 'acc']) + '\n')
 
-    returns:
-    D^{-1} M
-    where D is the diagonal node-degree matrix
-    """
+for lr in lrs:
+    for epochs in epoch_list:
+        for num in data_num:
 
-    d = np.array(M.sum(1))
+            args.rate = lr
+            args.epochs = epochs
+            args.split = num
 
-    di = np.power(d, -1).flatten()
-    di[np.isinf(di)] = 0.
-    DI = sp.diags(di)  # D inverse i.e. D^{-1}
+            dataset, trainIndex, test = data.load(args)  # load data,dataset parse해서 가져옴 dict형식
+            print("length of train is", len(trainIndex))
+            print("length of test is", len(test))
+            print("dropout is {}".format(args.dropout))
 
-    return DI.dot(M)
+            #step 0. Initialization, Load datasets
+            HyperGCN = initialise(dataset, args)
 
+            #step 1. Run (train and evaluate) the specified model
+
+            HyperGCN = T.train(HyperGCN, dataset, trainIndex, args)  #model.py train function
+            acc = E.test(HyperGCN, dataset, test, args)         #model.py test function
+
+           #step 2. Reprotr and save the final results
+            print("accuracy:", float(acc), ", error:", float(100*(1-acc))) #model.py accuracy, error
+
+            with open(csv_file_name, 'a') as f:
+                f.write(','.join([str(num), str(lr), str(epochs), str(float(acc))]) + '\n')
+
+'''
 #step 0. Initialization, Load datasets
 HyperGCN = initialise(dataset, args)
 
 #step 1. Run (train and evaluate) the specified model
-from models.HyperGCN import train as T
-from models.HyperGCN import eval as E
 
 HyperGCN = T.train(HyperGCN, dataset, trainIndex, args)  #model.py train function
 acc = E.test(HyperGCN, dataset, test, args)         #model.py test function
 
 #step 2. Reprotr and save the final results
 print("accuracy:", float(acc), ", error:", float(100*(1-acc))) #model.py accuracy, error
-
+'''
