@@ -16,12 +16,8 @@ import torch.optim as optim, utils
 from torch.autograd import Variable
 import scipy.sparse as sp
 
-if args.model == "HyperGCN":
-    from models.HyperGCN import train as T
-    from models.HyperGCN import eval as E
-elif args.model == "researchGCN":
-    from models.researchGCN import train as T
-    from models.researchGCN import eval as E
+from models import train as T
+from models import eval as E
 
 def initialise(dataset, args):
     """
