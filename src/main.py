@@ -94,16 +94,3 @@ acc = E.test(HyperGCN, dataset, test, args)         #model.py test function
 
 #step 2. Reprotr and save the final results
 print("accuracy:", float(acc), ", error:", float(100*(1-acc))) #model.py accuracy, error
-
-'''
-#step 0. Initialization, Load datasets
-HyperGCN = initialise(dataset, args)
-
-#step 1. Run (train and evaluate) the specified model
-
-HyperGCN = T.train(HyperGCN, dataset, trainIndex, args)  #model.py train function
-acc = E.test(HyperGCN, dataset, test, args)         #model.py test function
-
-#step 2. Reprotr and save the final results
-print("accuracy:", float(acc), ", error:", float(100*(1-acc))) #model.py accuracy, error
-'''
