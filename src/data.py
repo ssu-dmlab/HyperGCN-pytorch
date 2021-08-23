@@ -78,14 +78,3 @@ class parser(object):
         classes = set(labels)
         onehot = {c: np.identity(len(classes))[i, :] for i, c in enumerate(classes)}
         return np.array(list(map(onehot.get, labels)), dtype=np.int32)
-
-'''
-    def parse(self):
-        """
-        returns a dataset specific function to parse
-        """
-
-        name = "_load_data"
-        function = getattr(self, name, lambda: {})
-        return function() #load data return
-'''

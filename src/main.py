@@ -6,11 +6,6 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
 
 import data
-'''dataset, trainIndex, test = data.load(args) #load data,dataset parse해서 가져옴 dict형식
-print("length of train is", len(trainIndex))
-print("length of test is", len(test))
-print("dropout is {}".format(args.dropout))'''
-
 
 import torch.optim as optim, utils
 from torch.autograd import Variable
@@ -48,10 +43,6 @@ def initialise(dataset, args):
         from models.researchGCN import model
         hypergcn = model.HyperGCN(V, E, X, args)
 
-    '''
-    model = __import__('models.' + args.model + '.model')
-    hypergcn = model.HyperGCN(V, E, X, args)
-    '''
 
     optimiser = optim.Adam(list(hypergcn.parameters()), lr=args.rate, weight_decay=args.decay)  # optimiser adam used
 
