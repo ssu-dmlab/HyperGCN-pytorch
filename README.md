@@ -25,7 +25,7 @@ install the requirements using `pip install -r requirements.txt`
 > lamda for explicit Laplacian regularisation : 0.001  
 
 ## Training
-* Purpose : `**Hypernode classification**`
+* Purpose : `Hypernode classification`
 * To start training run :  
     `python main.py --mediators True --split 1 --data coauthorship -- dataset dblp`
 
@@ -60,7 +60,7 @@ So we need to find proper hyperparameter -> `Grid experiments` (about learning r
 ##Experiment's parameters of coauthorship/dblp
 > Split = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  
 > Learning rate = [0.001, 0.005, 0.01, 0.05, 0.1]  
-> Epoch = [100, 200, 500, 1000, 2000]
+> Epoch = [100, 200, 500, 1000, 2000]  
 ###High accuracy result
 
  Split | Learning rate | Epochs | Accuracy 
