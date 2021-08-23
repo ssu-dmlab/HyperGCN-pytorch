@@ -1,18 +1,40 @@
-The original repo is [here](https://github.com/malllabiisc/HyperGCN)
+
+#HyperGCN
+_________
+This is Pytorch implementation of **[HyperGCN: A New Method of Training Graph Convolutional Networks on Hypergraphs](https://github.com/malllabiisc/HyperGCN)** (NeurIPS 2019).
+
+##Requirements
+______________
+>tqdm == 4.62.1  
+> torch == 1.9.0  
+> scipy == 1.7.1  
+> numpy == 1.21.2  
+> ConfigArgParse == 1.5.2  
+
+install the requirements using pip install -r requirements.txt
+
+##Dependencies
+* Datasets : For data (and/or splits) not used in the paper
+> coauthorship : dblp, cora  
+> cocitation : citeseer, cora, pubmed
+* Hyperparameters : used in the paper - Following a prior work **[Kipf and Welling](https://github.com/tkipf/gcn)** (2017)
+> hidden layer size : 32  
+> dropout rate : 0.5  
+> learning rate : 0.01  
+> weight decay : o.ooo5  
+> training epochs : 200  
+> lamda for explicit Laplacian regularisation : 0.001  
+
+##Training
+* Purpose : **Hypernode classification**
+* To start training run :
+    > python main.py --mediators True --split 1 --data coauthorship -- dataset dblp
+
+In the project, config.py has hyperparameters as follows :
 
 
 
 #Difference with paper
-
-```
-paper uses hyperparameter as
-hidden layer size : 32
-dropout rate : 0.5
-learning rate : 0.01
-weight decay : o.ooo5
-number of training epochs : 200
-lamda for explicit Laplacian regularisation : 0.001
-Following a prior work Kipf and Welling [2017]
 
 However in condition, HyperGCN does not work well. -> use epoch 2000
 
