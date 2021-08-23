@@ -78,41 +78,22 @@ def initialise(dataset, args):
     HyperGCN['optimiser'] = optimiser
     return HyperGCN
 
-epoch_list = [500, 1000, 2000]
-lrs = [0.001, 0.005, 0.01, 0.05, 0.1]
-data_num = [1,2,3,4,5,6,7,8,9,10]
 
-csv_file_name = '/Users/keonwoo/Google Drive/result_table1.csv'
+dataset, trainIndex, test = data.load(args)  # load data,dataset parse해서 가져옴 dict형식
+print("length of train is", len(trainIndex))
+print("length of test is", len(test))
+print("dropout is {}".format(args.dropout))
 
-with open(csv_file_name, 'w') as f:
-    f.write(','.join(['split', 'lr', 'epochs', 'acc']) + '\n')
+#step 0. Initialization, Load datasets
+HyperGCN = initialise(dataset, args)
 
-for lr in lrs:
-    for epochs in epoch_list:
-        for num in data_num:
+#step 1. Run (train and evaluate) the specified model
 
-            args.rate = lr
-            args.epochs = epochs
-            args.split = num
+HyperGCN = T.train(HyperGCN, dataset, trainIndex, args)  #model.py train function
+acc = E.test(HyperGCN, dataset, test, args)         #model.py test function
 
-            dataset, trainIndex, test = data.load(args)  # load data,dataset parse해서 가져옴 dict형식
-            print("length of train is", len(trainIndex))
-            print("length of test is", len(test))
-            print("dropout is {}".format(args.dropout))
-
-            #step 0. Initialization, Load datasets
-            HyperGCN = initialise(dataset, args)
-
-            #step 1. Run (train and evaluate) the specified model
-
-            HyperGCN = T.train(HyperGCN, dataset, trainIndex, args)  #model.py train function
-            acc = E.test(HyperGCN, dataset, test, args)         #model.py test function
-
-           #step 2. Reprotr and save the final results
-            print("accuracy:", float(acc), ", error:", float(100*(1-acc))) #model.py accuracy, error
-
-            with open(csv_file_name, 'a') as f:
-                f.write(','.join([str(num), str(lr), str(epochs), str(float(acc))]) + '\n')
+#step 2. Reprotr and save the final results
+print("accuracy:", float(acc), ", error:", float(100*(1-acc))) #model.py accuracy, error
 
 '''
 #step 0. Initialization, Load datasets
