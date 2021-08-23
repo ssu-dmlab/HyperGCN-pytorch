@@ -62,7 +62,7 @@ So we need to find proper hyperparameter -> `Grid experiments` (about learning r
 > Learning rate = [0.001, 0.005, 0.01, 0.05, 0.1]  
 > Epoch = [100, 200, 500, 1000, 2000]  
 
-###High accuracy result
+**High accuracy result**
 
  Split | Learning rate | Epochs | Accuracy 
  ----- | ------------- | ------ | --------
