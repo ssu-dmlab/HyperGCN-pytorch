@@ -57,9 +57,9 @@ However in this default condition, HyperGCN does not train well.
 
 ![coauthorship/dblp.png](coauthorship-dblp.png) ![coauthorship/cora.png](coauthorship-cora.png)
 
-So we need to find proper hyperparameter -> `Grid experiments` (about learning rate, epoch in each split without validation part)  
+So we need to find proper hyperparameter -> `Grid experiments` (about learning rate, epoch in each split without validation part)
 
-##Experiment's parameters of coauthorship/dblp
+## Experiment's parameters of coauthorship/dblp
 
 > Split = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  
 > Learning rate = [0.001, 0.005, 0.01, 0.05, 0.1]  
