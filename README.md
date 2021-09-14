@@ -40,7 +40,7 @@ To train the model, type the following command:
 
  Option | Description | Default
  ------- | ---------- | --------
- data | oauthorship/cocitation | coauthorship
+ data | coauthorship/cocitation | coauthorship
  dataset | cora/dblp for coauthorship, cora/citeseer/pubmed for cocitation | dblp
  mediators | use of Laplacian | False
  fast | use of FastHyperGCN | False
