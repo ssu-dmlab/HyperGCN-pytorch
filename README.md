@@ -1,35 +1,42 @@
-g# HyperGCN
-_________
-This is Pytorch implementation of **[HyperGCN: A New Method of Training Graph Convolutional Networks on Hypergraphs](https://github.com/malllabiisc/HyperGCN)** (NeurIPS 2019).
-
-## Requirements
-______________
-> tqdm == 4.62.1  
-> torch == 1.9.0  
-> scipy == 1.7.1  
-> numpy == 1.21.2  
-> ConfigArgParse == 1.5.2  
-
-install the requirements using `pip install -r requirements.txt`
+# HyperGCN
+This repository aims to reproduce **HyperGCN** proposed in the paper entitled "HyperGCN: A New Method of Training Graph Convolutional Networks on Hypergraphs (NeurIPS 2019)". 
+ We refer to [the original repository](https://github.com/malllabiisc/HyperGCN) of **HyperGCN** to implement this repository. 
 
 ## Dependencies
-* Datasets : For data (and/or splits) not used in the paper
-> coauthorship : dblp, cora  
-> cocitation : citeseer, cora, pubmed
-* Hyperparameters : used in the paper - Following a prior work **[Kipf and Welling](https://github.com/tkipf/gcn)** (2017)
-> hidden layer size : 32  
-> dropout rate : 0.5  
-> learning rate : 0.01  
-> weight decay : o.ooo5  
-> training epochs : 200  
-> lamda for explicit Laplacian regularisation : 0.001  
+ We use the following Python packages to implement this. Install them in your environment using `pip install -r requirements.txt`. 
+
+ * tqdm == 4.62.1  
+ * torch == 1.9.0  
+ * scipy == 1.7.1  
+ * numpy == 1.21.2  
+ * ConfigArgParse == 1.5.2  
+
+ ## Experimental setting
+
+ ### Datasets
+ We use the following datasets for the experiments. 
+ * coauthorship : dblp, cora  
+ * cocitation : citeseer, cora, pubmed
+
+ ### Hyperparameters
+ We use the following hyperparameters as described in **[Kipf and Welling](https://github.com/tkipf/gcn)**. 
+ * hidden layer size : 32  
+ * dropout rate : 0.5  
+ * learning rate : 0.01  
+ * weight decay : 0.0005  
+ * training epochs : 200  
+ * lamda for explicit Laplacian regularisation : 0.001    
 
 ## Training
-* Purpose : `Hypernode classification`
-* To start training run :  
-    `python main.py --mediators True --split 1 --data coauthorship -- dataset dblp`
+To train the model, type the following command: 
+ ```bash
+ python main.py --mediators True --split 1 --data coauthorship -- dataset dblp
+ ```
 
-In the project, config.py has hyperparameters as follows :
+ It will train the model for the node classification task in the given hypergraph. 
+
+ In this project, you can control the value of each hyperparameter in `config.py`. 
+ The details of the hyperparameters are in the following table.
 
  Option | Description | Default
  ------- | ---------- | --------
@@ -48,7 +55,7 @@ In the project, config.py has hyperparameters as follows :
  decay | weight decay | 0.0005
  model | model for hypergraph | HyperGCN
 
-## Comparison of experimental results
+## Difference between this repository and the original repository
 
 I report `mean test error ± standard deviation` (lower is better) over train-test splits.  
 `Accuracy = 100(%) - Error`
@@ -69,7 +76,7 @@ I report `mean test error ± standard deviation` (lower is better) over train-te
  FastHyperGCN | 30.20 ± 12.6| 44.71 ± 13.3 | 49.82 ± 9 | 48.66 ± 15.6 | 50.11 ± 9.8
  HyperGCN | 27.28 ± 8.1 | 37.36 ± 16.8 | 52.19 ± 14.4 | 43.33 ± 12.2 | 51.77 ± 9.1
 
-In default hyperparameter in paper, these models do not train well.  
+In default hyperparameters in paper, these models do not train well.  
 - Check **[issue](https://github.com/malllabiisc/HyperGCN/issues/1)** at here
 
 So we need to find proper hyperparameter -> `Grid experiments` (about learning rate, epoch in each split without validation part)
