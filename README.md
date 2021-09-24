@@ -57,7 +57,7 @@ To train the model, type the following command:
 
 ## Difference between this repository and the original repository
 
-The above heperparameter setting suggested by the originaly repository seems to have an issue to produce the following results reported its paper (the related issue is found [here](https://github.com/malllabiisc/HyperGCN/issues/1)). 
+The above heperparameter setting suggested by the originaly repository seems to have an issue to produce the following results reported in its paper (the related issue is found [here](https://github.com/malllabiisc/HyperGCN/issues/1)). 
 
 ### The experimental result of the paper
 
