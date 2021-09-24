@@ -78,7 +78,7 @@ The above heperparameter setting suggested by the originaly repository seems to 
 
 ### Hyperparameter tuning
 
-The problematic hyperparameters are `learning rate = 0.01` and `epochs = 200`. 
+We think that the problematic hyperparameters are `learning rate = 0.01` and `epochs = 200`. 
 To find better hyperparameters, we perform grid searches for `learning rate` and `epochs` as follows:
 - Split = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  
 - Learning rate = [0.001, 0.005, 0.01, 0.05, 0.1]  
