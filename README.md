@@ -18,8 +18,8 @@ This repository aims to reproduce **HyperGCN** proposed in the paper entitled "H
  * coauthorship : dblp, cora  
  * cocitation : citeseer, cora, pubmed
 
- ### Hyperparameters
- We use the following hyperparameters as described in **[Kipf and Welling](https://github.com/tkipf/gcn)**. 
+ ### Default Hyperparameters
+ The followings are default hyperparameters, as described in **[the original repository](https://github.com/malllabiisc/HyperGCN)**. 
  * hidden layer size : 32  
  * dropout rate : 0.5  
  * learning rate : 0.01  
@@ -57,18 +57,17 @@ To train the model, type the following command:
 
 ## Difference between this repository and the original repository
 
-I report `mean test error ± standard deviation` (lower is better) over train-test splits.  
-`Accuracy = 100(%) - Error`
+The above heperparameter setting suggested by the originaly repository seems to have an issue to produce the following results reported its paper (the related issue is found [here](https://github.com/malllabiisc/HyperGCN/issues/1)). 
 
-### Paper's result
+### The experimental result of the paper
 
  | Method | DBLP <br> co-authorship | Pubmed <br> co-citation | Cora <br> co-authorship | Cora <br> co-citation | Citeseer <br> co-citation
  ------- | ------ | ---- | ---- | ----- |------
  1-HyperGCN | 33.87 ± 2.4 | 30.08 ± 1.5 | 36.22 ± 2.2 | 34.45 ± 2.1 | 38.87 ± 1.9
  FastHyperGCN | 27.34 ± 2.1| 29.48 ± 1.6 | 32.54 ± 1.8 | 32.43 ± 1.8 | 37.42 ± 1.7
  HyperGCN | 24.09 ± 2.0 | 25.56 ± 1.6 | 30.08 ± 1.8 | 32.37 ± 1.7 | 37.35 ± 1.6
-
-### My Experiment's result
+ 
+### The reproduced result
 
 | Method | DBLP <br> co-authorship | Pubmed <br> co-citation | Cora <br> co-authorship | Cora <br> co-citation | Citeseer <br> co-citation
  ------- | ------ | ---- | ---- | ----- |------
@@ -76,19 +75,17 @@ I report `mean test error ± standard deviation` (lower is better) over train-te
  FastHyperGCN | 30.20 ± 12.6| 44.71 ± 13.3 | 49.82 ± 9 | 48.66 ± 15.6 | 50.11 ± 9.8
  HyperGCN | 27.28 ± 8.1 | 37.36 ± 16.8 | 52.19 ± 14.4 | 43.33 ± 12.2 | 51.77 ± 9.1
 
-In default hyperparameters in paper, these models do not train well.  
-- Check **[issue](https://github.com/malllabiisc/HyperGCN/issues/1)** at here
 
-So we need to find proper hyperparameter -> `Grid experiments` (about learning rate, epoch in each split without validation part)
+### Hyperparameter tuning
 
-## Experiment's parameters of coauthorship/dblp
+The problematic hyperparameters are `learning rate = 0.01` and `epochs = 200`. 
+To find better hyperparameters, we perform grid searches for `learning rate` and `epochs` as follows:
+- Split = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  
+- Learning rate = [0.001, 0.005, 0.01, 0.05, 0.1]  
+- Epoch = [100, 200, 500, 1000, 2000]  
 
-> Split = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  
-> Learning rate = [0.001, 0.005, 0.01, 0.05, 0.1]  
-> Epoch = [100, 200, 500, 1000, 2000]  
-
-**The highest accuracy result**
-
+We summarize the result of this experiment in the following table. 
+We report the average of test errors (lower is better) with their standard deviation over 10 runs (accuracy = 100 - error). 
 
   Task | Method | Learning rate | Epochs | Error ± std
  ----- | ------ | ------ | ------- | -------
@@ -107,6 +104,3 @@ So we need to find proper hyperparameter -> `Grid experiments` (about learning r
  Citeseer <br> (co-citation) | 1-HyeprGCN | 0.1 | 2000 | 39.59 ± 2.8
  Citeseer <br> (co-citation) | HyeprGCN | 0.1 | 2000 | 38.62 ± 1.5
  Citeseer <br> (co-citation) | FastHyeprGCN | 0.1 | 2000 | 40.83 ± 3.1
-
-- `mean of accuracy` is 0.849550073302664 ~ 0.85  
-- {Learning rate , Epoch} = [(0.05,500), (0.05,2000), (0.1,1000)] has similiar result as above
