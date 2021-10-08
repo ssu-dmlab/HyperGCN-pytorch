@@ -55,7 +55,7 @@ To train the model, type the following command:
  decay | weight decay | 0.0005
  model | model for hypergraph | HyperGCN
 
-## Difference between this repository and the original repository
+## Difference between this and the original repository
 
 The above heperparameter setting suggested by the originaly repository seems to have an issue to produce the following results reported in its paper (the related issue is found [here](https://github.com/malllabiisc/HyperGCN/issues/1)). 
 
