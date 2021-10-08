@@ -11,22 +11,6 @@ This repository aims to reproduce **HyperGCN** proposed in the paper entitled "H
  * numpy == 1.21.2  
  * ConfigArgParse == 1.5.2  
 
- ## Experimental setting
-
- ### Datasets
- We use the following datasets for the experiments. 
- * coauthorship : dblp, cora  
- * cocitation : citeseer, cora, pubmed
-
- ### Default Hyperparameters
- The followings are default hyperparameters, as described in **[the original repository](https://github.com/malllabiisc/HyperGCN)**. 
- * hidden layer size : 32  
- * dropout rate : 0.5  
- * learning rate : 0.01  
- * weight decay : 0.0005  
- * training epochs : 200  
- * lamda for explicit Laplacian regularisation : 0.001    
-
 ## Training
 To train the model, type the following command: 
  ```bash
@@ -54,6 +38,23 @@ To train the model, type the following command:
  rate | learning rate | 0.01
  decay | weight decay | 0.0005
  model | model for hypergraph | HyperGCN
+
+ ## Experimental setting
+
+ ### Datasets
+ We use the following datasets for the experiments. 
+ * coauthorship : dblp, cora  
+ * cocitation : citeseer, cora, pubmed
+
+ ### Default Hyperparameters
+ The followings are default hyperparameters, as described in **[the original repository](https://github.com/malllabiisc/HyperGCN)**. 
+ * hidden layer size : 32  
+ * dropout rate : 0.5  
+ * learning rate : 0.01  
+ * weight decay : 0.0005  
+ * training epochs : 200  
+ * lamda for explicit Laplacian regularisation : 0.001    
+
 
 ## Difference between this and the original repository
 
