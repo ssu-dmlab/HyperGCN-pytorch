@@ -104,3 +104,6 @@ We report the average of test errors (lower is better) with their standard devia
  Citeseer <br> (co-citation) | 1-HyeprGCN | 0.1 | 2000 | 39.59 ± 2.8
  Citeseer <br> (co-citation) | HyeprGCN | 0.1 | 2000 | 38.62 ± 1.5
  Citeseer <br> (co-citation) | FastHyeprGCN | 0.1 | 2000 | 40.83 ± 3.1
+ 
+ ## References
+ [1] Yadati, N., Nimishakavi, M., Yadav, P., Nitin, V., Louis, A., & Talukdar, P. (2019). HyperGCN: A New Method For Training Graph Convolutional Networks on Hypergraphs. Advances in Neural Information Processing Systems, 32, 1511-1522.
